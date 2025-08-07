@@ -1,18 +1,17 @@
+// MULTI EDITOR
 'use client';
 
-import { useParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 import dynamic from 'next/dynamic';
 import { faPlay, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fileNames, starterCodes } from '../../utils/languageData';
-import LanguageSelector from '../../components/LanguageSelector'; // Dropdown 
-import { useRouter } from 'next/navigation';
 
 const MonacoEditor = dynamic(() => import('../../components/CodeEditor'), { ssr: false });
-let socket;
 
+/* ---------------- language helpers ---------------- */
 const languageMap = {
   javascript: 'javascript',
   typescript: 'typescript',
@@ -37,137 +36,147 @@ const languageIdMap = {
   php: 68,
   ruby: 72,
 };
-
+/*                   COMPONENT                         */
 export default function RoomEditorPage() {
-  const router = useRouter();
   const { language, roomId } = useParams();
-  console.log("params", { language, roomId });
+  const router = useRouter();
 
-
-  // const [editorLanguage, setEditorLanguage] = useState(languageMap[language] || 'javascript');
+  /* ───────────────── state ───────────────── */
   const editorLanguage = languageMap[language] || 'javascript';
-
-
-
   const [code, setCode] = useState('');
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
 
+  /* ───────────────── socket setup ───────────────── */
+  const socketRef = useRef(null);
+
+  /* 1. Load starter code when language changes */
   useEffect(() => {
-
     setCode(starterCodes[editorLanguage] || '// Start coding here...');
-
   }, [editorLanguage]);
 
+  /* 2. Init socket & join room */
   useEffect(() => {
-    socket = io('http://localhost:3000');
-    socket.emit('join-room', roomId);
-    socket.on('code-change', (newCode) => setCode(newCode));
+    socketRef.current = io(undefined, { path: '/api/socket' });
 
-    return () => socket.disconnect();
+    socketRef.current.emit('join-room', { roomId });
+
+    socketRef.current.on('code-change', ({ code }) => {
+      console.log('📥 incoming', code.slice(0, 15)); // ✅ logs incoming socket updates
+      setCode(code);
+    });
+
+    socketRef.current.on('run-output', ({ output }) => {
+      setOutput(output);
+    });
+
+    socketRef.current.on('connect', () => {
+      console.log('Connected to socket server');
+    });
+    socketRef.current.on('connect_error', (err) => {
+      console.error('Socket connection error:', err);
+    });
+
+    return () => socketRef.current.disconnect();
   }, [roomId]);
 
+  /* 3. Editor change handler */
   const handleEditorChange = (newCode) => {
     setCode(newCode);
-    socket.emit('code-change', { roomId, code: newCode });
+    socketRef.current.emit('code-change', { roomId, code: newCode });
   };
 
+  /* ───────────────── run‑code with Judge0 ───────────────── */
   const runCode = async () => {
     setIsRunning(true);
     setOutput('Running...');
 
     const languageId = languageIdMap[language];
-
     if (!languageId) {
-      setOutput('❌ Unsupported language.');
+      const errorMessage = '❌ Unsupported language.';
+      setOutput(errorMessage);
+      socketRef.current.emit('run-output', { roomId, output: errorMessage });
       setIsRunning(false);
       return;
     }
 
-    const encodedCode = btoa(code);
-
     try {
-      const response = await fetch('https://judge0-ce.p.rapidapi.com/submissions/?base64_encoded=true&wait=true', {
-        method: 'POST',
-        headers: {
-          'content-type': 'application/json',
-          'X-RapidAPI-Key': '3d7f474beamsh8d37fc893c0d6cdp11ce22jsn808e66c48d0f',
-          'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
-        },
-        body: JSON.stringify({
-          language_id: languageId,
-          source_code: encodedCode,
-          stdin: ''
-        }),
-      });
-
-      const result = await response.json();
-
-      if (result.stdout) {
-        setOutput(atob(result.stdout));
-      } else if (result.stderr) {
-        setOutput(atob(result.stderr));
-      } else if (result.compile_output) {
-        setOutput(atob(result.compile_output));
-      } else {
-        setOutput('Unknown error.');
-      }
-    } catch (err) {
-      setOutput('❌ Failed to run code.');
+  const res = await fetch(
+    'https://judge0-ce.p.rapidapi.com/submissions/?base64_encoded=true&wait=true',
+    {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        // 'X-RapidAPI-Key': '3d7f474beamsh8d37fc893c0d6cdp11ce22jsn808e66c48d0f',
+        'X-RapidAPI-Key': '066dad0df3mshb9c05a142c2758cp12ec0ejsn749d06b1348e',
+        'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com',
+      },
+      body: JSON.stringify({
+        language_id: languageId,
+        source_code: btoa(code),
+        stdin: '',
+      }),
     }
+  );
+
+  const result = await res.json();
+  let outputText = 'Unknown error.';
+  if (result.stdout)          outputText = atob(result.stdout);
+  else if (result.stderr)     outputText = atob(result.stderr);
+  else if (result.compile_output) outputText = atob(result.compile_output);
+
+  // 🔸 only ONE setOutput, after outputText is final
+  setOutput(outputText);
+  socketRef.current.emit('run-output', { roomId, output: outputText });
+} catch (err) {
+  const errorText = '❌ Failed to run code.';
+  setOutput(errorText);
+  socketRef.current.emit('run-output', { roomId, output: errorText });
+}
 
     setIsRunning(false);
   };
 
+  /* ───────────────── render ───────────────── */
   return (
     <div>
-      {/* Header Title and Room ID */}
+      {/* Header */}
       <div className="text-xl font-semibold capitalize relative top-[10px] ml-[9px] flex justify-between pr-4">
         <div>Online {editorLanguage} Compiler</div>
         <div className="text-sm text-gray-600">Room ID: {roomId}</div>
       </div>
 
-      {/* Navbar */}
-      <div className="fileName box-border absolute top-[49px] w-[100%] h-[8%] " style={{ backgroundColor: '#3c4042' }}>  </div>
+      {/* Top bar */}
+      <div
+        className="fileName box-border absolute top-[49px] w-full h-[8%]"
+        style={{ backgroundColor: '#3c4042' }}
+      />
 
-      {/* RUN BUTTON */}
-      <button onClick={runCode} className=" p-1.5 text-gray-800 rounded absolute top-[60px] left-[44%] cursor-pointer w-[70px] font-medium" style={{ backgroundColor: '#6741d9' }}>
-        {isRunning ?    // if isRunning then ( loading... ) else ( Run )
-          (<FontAwesomeIcon icon={faSpinner} />) :
-          (
-            <> Run <FontAwesomeIcon icon={faPlay} className="ml-1.5" />   </>
-          )}
-
+      {/* RUN button */}
+      <button
+        onClick={runCode}
+        className="p-1.5 text-gray-800 rounded absolute top-[60px] left-[44%] cursor-pointer w-[70px] font-medium"
+        style={{ backgroundColor: '#6741d9' }}
+      >
+        {isRunning ? (
+          <FontAwesomeIcon icon={faSpinner} />
+        ) : (
+          <>
+            Run <FontAwesomeIcon icon={faPlay} className="ml-1.5" />
+          </>
+        )}
       </button>
 
-      {/* Dropdown - to switch language */}
-      <div className='relative top-[-78px] p-2 bg-white border-white border-1 rounded text-gray-900 cursor-pointer'>
-        {/* <LanguageSelector value={editorLanguage} onChange={newLang} />
-         router.push(`/${newLang}/${roomId}`);
-          */}
-        <LanguageSelector
-          value={editorLanguage}
-          onChange={(newLang) => {
-            if (!roomId) return; // prevents undefined issue
-            router.push(`/${newLang}/${roomId}`);
-          }}
-        />
-
-      </div>
-
-      {/* Code Editor */}
-
-      <div  >
-        <MonacoEditor
-          language={editorLanguage}
-          fileName={fileNames[editorLanguage] || 'index.js'}
-          value={code}
-          onChange={handleEditorChange}
-        />
-      </div>
+      {/* Code editor */}
+      <MonacoEditor
+        language={editorLanguage}
+        fileName={fileNames[editorLanguage] || 'index.js'}
+        value={code}
+        onChange={handleEditorChange}
+      />
 
       {/* Output */}
-      <pre className=" bg-black text-white absolute  top-[104px] right-[0px] h-[85vh] w-[50vw]">
+      <pre className="bg-black text-white absolute top-[104px] right-0 h-[85vh] w-[50vw]">
         {output}
       </pre>
     </div>

@@ -1,24 +1,24 @@
 // app/page.js (Homepage with buttons to go to /java, /python etc.)
 
 // LANGUAGE SELECT - DROPDOWN component
-
-// app/page.js
-'use client';
+"use client"
 import { useRouter } from 'next/navigation';
-
-export default function Home() {
-  const router = useRouter();
-
-  const handleChange = (e) => {
-    const selectedPath = e.target.value;
-    if (selectedPath) {
-      router.push(selectedPath);
+export default function LanguageSelector({ language, setLanguage }) {
+const router = useRouter();
+const handleChange = (e) => {
+    const selected = e.target.value;
+    setLanguage(selected);
+    if (selected) {
+      router.push(selected); // navigate to selected route
     }
   };
-
   return (
+
     <main className="p-6 flex flex-col text-red-600 absolute right-[93px] top-[82px]">
-      <select onChange={handleChange} className="p-2 bg-white border-white border-1 rounded text-gray-900 cursor-pointer max-h-32 overflow-y-auto"
+      <select 
+       value={language}
+       onChange={handleChange}
+       className="p-2 bg-white border-white border-1 rounded text-gray-900 cursor-pointer max-h-32 overflow-y-auto"
      >
         <option value="">Select Language</option>
         {/* <optgroup label="Popular"> */}
@@ -51,4 +51,3 @@ export default function Home() {
   );
 }
 
-// Aao na , pal pal titli ud 
