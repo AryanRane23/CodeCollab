@@ -13,8 +13,18 @@ export default function HomePage() {
   const [language, setLanguage] = useState('javascript');
 
   // Generate a room and redirect to /[language]?room=uuid
-  const handleCreateRoom = () => {
+  const handleCreateRoom = async () => {
     const roomId = uuagidv4();
+
+     // Call backend to add room
+  const res = await fetch('/api/rooms', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ roomId, language }),
+  });
+
+  if (!res.ok) return alert('Failed to create room');
+
     router.push(`/${language}/${roomId}`);
   };
 

@@ -1,6 +1,5 @@
 // server.js
 console.log("✅ server.js is running...");
-
 import { createServer } from 'http';
 import next from 'next';
 import { Server } from 'socket.io';
@@ -20,7 +19,7 @@ app.prepare().then(() => {
     },
   });
 
-  const rooms = new Map();
+   const rooms = new Map();
 
   io.on('connection', (socket) => {
     console.log('🔌 socket connected', socket.id);

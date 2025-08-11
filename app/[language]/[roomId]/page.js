@@ -1,6 +1,5 @@
 // MULTI EDITOR
 'use client';
-
 import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
@@ -90,7 +89,7 @@ export default function RoomEditorPage() {
   const runCode = async () => {
     setIsRunning(true);
     setOutput('Running...');
-
+    
     const languageId = languageIdMap[language];
     if (!languageId) {
       const errorMessage = '❌ Unsupported language.';
@@ -171,12 +170,13 @@ export default function RoomEditorPage() {
       <MonacoEditor
         language={editorLanguage}
         fileName={fileNames[editorLanguage] || 'index.js'}
+        starterCode={starterCodes[editorLanguage] || ''}
         value={code}
         onChange={handleEditorChange}
       />
 
       {/* Output */}
-      <pre className="bg-black text-white absolute top-[104px] right-0 h-[85vh] w-[50vw]">
+      <pre className="bg-black text-white absolute top-[104px] right-0 h-[85vh] w-[50vw] ">
         {output}
       </pre>
     </div>
