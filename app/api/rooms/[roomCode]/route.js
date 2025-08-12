@@ -1,16 +1,18 @@
-import { NextResponse } from 'next/server';
-import { getRoom } from '../../../../roomStore.js';
+// Users joining a room -> GET
+import { connectDB } from '../../../../lib/db';
+import Room from '../../../models/Room';
 
-export async function GET(request, context) {
-  // Await params specifically:
-  const params = await context.params;
-  const { roomCode } = params;
+export async function GET(req, { params }) {
+  try {
+    await connectDB();
+    const { roomCode } = params;
 
-  const room = getRoom(roomCode);
-
-  if (!room) {
-    return NextResponse.json({ error: 'Room not found' }, { status: 404 });
-  }
-
-  return NextResponse.json({ language: room.language });
+    const room = await Room.findById(roomCode);
+    if (!room) {
+      return new Response(JSON.stringify({ error: 'Invalid room ID' }), { status: 404 });
+    }
+    return new Response(JSON.stringify(room), { status: 200 });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+  } 
 }

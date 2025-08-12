@@ -1,14 +1,23 @@
-import { NextResponse } from 'next/server';
-import { addRoom } from '../../../roomStore';
+// Host creating a room -> POST
+import { connectDB } from '../../../lib/db';
+import Room from '../../models/Room';
 
-export async function POST(request) {
-  const { roomId, language } = await request.json();
+export async function POST(req) {
+  try {
+    await connectDB();
+    const { roomId, language } = await req.json();
 
-  if (!roomId || !language) {
-    return NextResponse.json({ error: 'Missing roomId or language' }, { status: 400 });
+    // Check if room already exists
+    const existingRoom = await Room.findById(roomId);
+    if (existingRoom) {
+      return new Response(JSON.stringify({ error: 'Cannot create this room, It already exists' }), { status: 400 });
+    }
+
+    // Store the new room in the database
+    const newRoom = await Room.create({ _id: roomId, language });
+
+    return new Response(JSON.stringify(newRoom), { status: 201 });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
-
-  addRoom(roomId, language);
-
-  return NextResponse.json({ message: 'Room added' });
 }
