@@ -10,10 +10,10 @@ export async function POST(req) {
     // Check if room already exists
     const existingRoom = await Room.findById(roomId);
     if (existingRoom) {
-      return new Response(JSON.stringify({ error: 'Cannot create this room, It already exists' }), { status: 400 });
+      return new Response(JSON.stringify({ error: 'Room already exists' }), { status: 400 });
     }
 
-    // Store the new room in the database
+    // Create new room
     const newRoom = await Room.create({ _id: roomId, language });
 
     return new Response(JSON.stringify(newRoom), { status: 201 });
@@ -21,3 +21,5 @@ export async function POST(req) {
     return new Response(JSON.stringify({ error: error.message }), { status: 500 });
   }
 }
+
+

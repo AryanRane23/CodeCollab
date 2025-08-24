@@ -1,99 +1,33 @@
-// app/page.js (Home page)
+//  app/page.js (Home page)
 'use client';
-// import LanguageSelector from "./components/LanguageSelector"
-import Authorization from "./components/Authorization";
-import { useRouter } from 'next/navigation';
-import { useState } from 'react';
-import { v4 as uuagidv4 } from 'uuid';
+import BlackHole from './components/BlackHole';
+import Link from 'next/link';
 
 export default function HomePage() {
  
-  const router = useRouter();
-  const [roomCode, setRoomCode] = useState('');
-  const [language, setLanguage] = useState('javascript');
-
-  // Generate a room and redirect to /[language]?room=uuid
-  const handleCreateRoom = async () => {
-    const roomId = uuagidv4();
-
-     // Call backend to add room
-  const res = await fetch('/api/rooms', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ roomId, language }),
-  });
-
-  if (!res.ok) return alert('Failed to create room');
-
-    router.push(`/${language}/${roomId}`);
-  };
-
-  // Join a room if room code is valid
-  const handleJoinRoom = async () => {
-  if (!roomCode.trim()) return alert('Please enter a room code');
-
-  // ask the server: “does this room exist, and what language was it created with?”
-  const res = await fetch(`/api/rooms/${roomCode.trim()}`);
-  if (!res.ok) return alert('❌  Invalid room code');
-
-  const { language } = await res.json();   // <- host’s language
-  router.push(`/${language}/${roomCode.trim()}`);
-};
-
   return (
-    <div className="min-h-screen flex flex-col justify-center items-center bg-gray-100">
-      <h1 className="text-3xl font-bold mb-6">Collaborative Code Editor</h1>
+    
+      // <div className="relative z-10 bg-opacity-60 shadow-lg text-center overflow-hidden bg-black" >
+      <div class=" fixed inset-0 -z-10 h-full w-full items-center px-5 py-24 [background:radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)]">
+      <BlackHole />
 
-      {/* LOGIN PAGE */}
-      <Authorization/>
 
-      {/* Language Selector - DROPDOWN */}
-      <select 
-        value={language}
-        onChange={(e) => setLanguage(e.target.value)}
-        className="mb-4 p-2 border rounded cursor-pointer"
-      >
-        <option value="javascript">JavaScript</option>
-        <option value="python">Python</option>
-        <option value="cpp">C++</option>
-        <option value="java">Java</option>
-      </select>
+      {/* Navbar */}
+      <h3 className='text-amber-50 font-bold absolute top-[20px] '>CodeCollab</h3>
+      <Link href="login"  className='border-1 rounded-3xl border-gray-400 text-gray-200 text-sm font-thin py-1 p-3 absolute right-[132px] top-[28px]'>Login </Link>
+      <Link href="signup"  className='border-1 rounded-3xl border-gray-400 text-gray-200 text-sm font-thin py-1 p-3 absolute right-[50px] top-[28px]'>Sign up </Link>
 
-      {/* Create Room Button */}
-      <button
-        onClick={handleCreateRoom}
-        className="bg-blue-600 text-white px-4 py-2 rounded mb-4 hover:bg-blue-700 cursor-pointer"
-      >
-        Create Room
-      </button>
+        <h1 className="text-5xl font-bold mb-6 bg-gradient-to-r from-purple-500 to-pink-500 text-transparent bg-clip-text absolute right-[316px] top-[100px] ">Collaborative Code Editor</h1>
+        <p className="text-mono text-center text-gray-300 mb-6 absolute right-[260px] top-[167px]  ">
+          Experience the future of collaborative coding with our real-time platform including audio/video features.<br></br>
+          Connect with developers worldwide, share ideas instantly, and build together effortlessly with us.</p>
 
-      {/* Join Room Input */}
-      <div className="flex gap-2">
-        <input
-          type="text"
-          value={roomCode}
-          onChange={(e) => setRoomCode(e.target.value)}
-          placeholder="Enter room code"
-          className="border p-2 rounded"
-        />
-        <button
-          onClick={handleJoinRoom}
-          className="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 cursor-pointer"
-        >
-          Join Room
-        </button>
+<a
+  href="/signup"
+  className="inline-flex items-center gap-2 justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:pointer-events-none disabled:opacity-50 bg-gradient-to-tl from-indigo-500 to-fuchsia-500 text-white px-4 py-2 h-[42px]  z-10 hover:opacity-90 absolute right-[588px] bottom-[367px]">
+  Get Started   
+</a>
 
-        {/* if (!roomCode.trim()) {
-         alert("Please enter a room code.");
-         return;
-}
-
-2. Automatically copy invite link (when room is created):
-
-navigator.clipboard.writeText(`${window.location.origin}/${language}/${roomId}`);
-*/}
-
-      </div>
     </div>
   );
 }

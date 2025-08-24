@@ -100,7 +100,6 @@ export default function LanguagePage() {
         method: 'POST',
         headers: {
           'content-type': 'application/json',
-          // 'X-RapidAPI-Key': '066dad0df3mshb9c05a142c2758cp12ec0ejsn749d06b1348e',
           'X-RapidAPI-Key': '3d7f474beamsh8d37fc893c0d6cdp11ce22jsn808e66c48d0f',
           'X-RapidAPI-Host': 'judge0-ce.p.rapidapi.com'
         },

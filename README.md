@@ -35,3 +35,12 @@ Atlas is a Databse itself. So use it to run on anyones PC even if they don't hav
 1. Whitelist multiple IPs (home + hotspot) in Atlas.
 
 2. Use 0.0.0.0/0 temporarily while developing from multiple places, but remove it when done.
+
+## For Login & Sign-up ( NextAuth )
+* __Credentials Provider__ in NextAuth is for login (authenticate an existing user).
+
+* For sign-up, you need __your own endpoint__ to create a user, hash the password, and store name, email, and password in your database.
+
+                                               "or"
+
+* For sign-up : "Enter email & get code on that email and then sign-up" so your name would be the same as the __email name__ even after using the __manual way__
