@@ -7,7 +7,11 @@ module.exports = {
     "./src/**/*.{html,js,jsx,ts,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+       fontFamily: {
+        arimo: ["var(--font-arimo)"],
+       }
+    },
   },
   plugins: [],
 }

@@ -1,0 +1,96 @@
+.font-arimo {
+  font-family: "Arimo", sans-serif;
+}
+
+.container {
+  color: #ffffff;
+  position: relative;
+  font-family: "Arimo", sans-serif;
+  /* width: 150px;
+  height:200px; */
+
+}
+
+/* background mesh */
+/* .container::before,
+.container::after {
+  content: "";
+  background-color: #4000ff76;
+  position: absolute;
+} */
+
+
+.container::before {
+  border-radius: 50%;
+  width: 10rem;
+  height: 10rem;
+  position: absolute;
+  right: 266px;
+  top: 31px;
+
+}
+
+/* .container::after {
+  content: "";
+  position: absolute;
+  height: 3rem;
+  top: 8%;
+  right: 5%;
+  border: 1px solid;
+} */
+
+.container .box {
+  width: 419px;
+  height: 250px;
+  position:absolute;
+  right: -187px;
+  top: -17px;
+
+  padding: 1rem;
+  background-color: rgba(81, 81, 125, 0.074);
+  border: 1px solid #ffffff39;
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+  border-radius: 0.7rem;
+  transition: all ease 0.3s;
+}
+
+.container .box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* .container .box .title {
+  color:#ffffff;
+  font-size: 2rem;
+  font-family:Arial, Helvetica, sans-serif;
+  letter-spacing: 0.1em;
+} */
+
+.container .box div strong {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.container .box div p {
+  margin: 0;
+  font-size: 0.9em;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+}
+
+.container .box div span {
+  font-size: 0.7rem;
+  font-weight: 300;
+}
+
+.container .box div span:nth-child(3) {
+  font-weight: 500;
+  margin-right: 0.2rem;
+}
+
+/* .container .box:hover {
+  box-shadow: 0px 0px 20px 1px #2020203f;
+  border: 1px solid rgba(255, 255, 255, 0.454);
+} */
