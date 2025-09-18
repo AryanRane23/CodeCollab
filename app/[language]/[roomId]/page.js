@@ -11,30 +11,57 @@ import { fileNames, starterCodes } from '../../utils/languageData';
 const MonacoEditor = dynamic(() => import('../../components/CodeEditor'), { ssr: false });
 
 /* ---------------- language helpers ---------------- */
-const languageMap = {
-  javascript: 'javascript',
-  typescript: 'typescript',
-  python: 'python',
-  java: 'java',
-  cpp: 'cpp',
-  c: 'c',
-  cs: 'csharp',
-  go: 'go',
-  php: 'php',
-  ruby: 'ruby',
-};
+  const languageMap = {
+    javascript: "javascript",
+    typescript: "typescript",
+    python: "python",
+    java: "java",
+    cpp: "cpp",
+    c: "c",
+    cs: "csharp",
+    go: "go",
+    php: "php",
+    ruby: "ruby",
+    swift: "swift",
+    kotlin: "kotlin",
+    rust: "rust",
+    r: "r",
+    perl: "perl",
+    bash: "bash",
+    dart: "dart",
+    scala: "scala",
+    haskell: "haskell",
+    sql: "sql",
+    html: "html",
+    xml: "xml",
+    markdown: "markdown",
+  };
 
-const languageIdMap = {
-  javascript: 63,
-  python: 71,
-  java: 62,
-  cpp: 54,
-  c: 50,
-  cs: 51,
-  go: 60,
-  php: 68,
-  ruby: 72,
-};
+  const languageIdMap = {
+    javascript: 63,   // Node.js
+    typescript: 74,
+    python: 71,       // Python 3
+    java: 62,
+    cpp: 54,          // C++ (GCC 9.2)
+    c: 50,            // C (GCC 9.2)
+    cs: 51,           // C#
+    go: 60,
+    php: 68,
+    ruby: 72,
+    swift: 83,
+    kotlin: 78,
+    rust: 73,
+    r: 80,
+    perl: 85,
+    bash: 46,
+    dart: 90,
+    scala: 81,
+    haskell: 61,
+    sql: 82,
+    html: 93,
+    xml: 94,
+    markdown: 96,
+  };
 /*                   COMPONENT                         */
 export default function RoomEditorPage() {
   const { language, roomId } = useParams();
@@ -136,49 +163,51 @@ export default function RoomEditorPage() {
     setIsRunning(false);
   };
 
-  /* ───────────────── render ───────────────── */
-  return (
-    <div>
-      {/* Header */}
-      <div className="text-xl font-semibold capitalize relative top-[10px] ml-[9px] flex justify-between pr-4">
-        <div>Online {editorLanguage} Compiler</div>
-        <div className="text-sm text-gray-600">Room ID: {roomId}</div>
+    /* ───────────────── render ───────────────── */
+    return (
+      <div className='bg-gray-800'>
+
+        {/* Header */}
+        <div className=" text-xl font-semibold capitalize relative top-[10px] ml-[9px] flex justify-between pr-4 text-white">
+          <div>Online {editorLanguage} Compiler</div>
+          <div className="text-sm text-white">Room ID: {roomId}</div>
+        </div>
+
+        {/* Top bar */}
+        <div
+          className="border border-gray-600 bg-gray-800 fileName box-border absolute top-[53px] w-[72vw] h-[8%] "
+          // style={{ backgroundColor: '#3c4042' }}
+        />
+
+        {/* RUN button */}
+        <button
+          onClick={runCode}
+          className="p-1.5 text-gray-800 rounded absolute top-[60px] left-[44%] cursor-pointer w-[70px] font-medium"
+          style={{ backgroundColor: '#6741d9' }}
+        >
+          {isRunning ? (
+            <FontAwesomeIcon icon={faSpinner} />
+          ) : (
+            <>
+              Run <FontAwesomeIcon icon={faPlay} className="ml-1.5" />
+            </>
+          )}
+        </button>
+
+        {/* Code editor */}
+        <MonacoEditor
+          language={editorLanguage}
+          fileName={fileNames[editorLanguage] || 'index.js'}
+          starterCode={starterCodes[editorLanguage] || ''}
+          value={code}
+          onChange={handleEditorChange}
+        />
+
+        {/* Output */}
+        <pre className="outputSection bg-gray-800 text-white absolute top-[473px]  h-[25vh] w-[72vw] border border-gray-700 ">
+          <div className='text-gray-400 '>Output:</div>
+          {output}
+        </pre>
       </div>
-
-      {/* Top bar */}
-      <div
-        className="fileName box-border absolute top-[49px] w-full h-[8%]"
-        style={{ backgroundColor: '#3c4042' }}
-      />
-
-      {/* RUN button */}
-      <button
-        onClick={runCode}
-        className="p-1.5 text-gray-800 rounded absolute top-[60px] left-[44%] cursor-pointer w-[70px] font-medium"
-        style={{ backgroundColor: '#6741d9' }}
-      >
-        {isRunning ? (
-          <FontAwesomeIcon icon={faSpinner} />
-        ) : (
-          <>
-            Run <FontAwesomeIcon icon={faPlay} className="ml-1.5" />
-          </>
-        )}
-      </button>
-
-      {/* Code editor */}
-      <MonacoEditor
-        language={editorLanguage}
-        fileName={fileNames[editorLanguage] || 'index.js'}
-        starterCode={starterCodes[editorLanguage] || ''}
-        value={code}
-        onChange={handleEditorChange}
-      />
-
-      {/* Output */}
-      <pre className="bg-black text-white absolute top-[104px] right-0 h-[85vh] w-[50vw] ">
-        {output}
-      </pre>
-    </div>
-  );
-}
+    );
+  }
