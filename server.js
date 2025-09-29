@@ -46,6 +46,15 @@ app.prepare().then(() => {
 
       io.to(roomId).emit('run-output', { output }); // ✅ broadcast to everyone
     });
+
+    // --- ADD THIS FOR CHAT ---
+    socket.on('message', (messageData) => {
+      // Broadcast only to the room
+      if (messageData.roomId) {
+        io.to(messageData.roomId).emit('message', messageData);
+      }
+    });
+    // --- END CHAT ---
   });
 
   server.listen(3000, () => {

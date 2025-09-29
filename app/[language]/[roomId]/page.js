@@ -7,6 +7,7 @@ import dynamic from 'next/dynamic';
 import { faPlay, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fileNames, starterCodes } from '../../utils/languageData';
+import ChatWindow from '../../components/ChatWindow'; // <-- Add this import
 
 const MonacoEditor = dynamic(() => import('../../components/CodeEditor'), { ssr: false });
 
@@ -62,6 +63,17 @@ const languageIdMap = {
   xml: 94,
   markdown: 96,
 };
+
+
+function getOrCreateUserId() {
+  let id = sessionStorage.getItem("userId");
+  if (!id) {
+    id = Math.random().toString(36).substring(2, 11);
+    sessionStorage.setItem("userId", id);
+  }
+  return id;
+}
+
 /*                   COMPONENT                         */
 export default function RoomEditorPage() {
   const { language, roomId } = useParams();
@@ -73,6 +85,8 @@ export default function RoomEditorPage() {
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
   const [activeTab, setActiveTab] = useState("chat"); // for Chat | Participants toggle
+  const [messages, setMessages] = useState([]);
+  const [myId, setMyId] = useState(null);
 
   /* ───────────────── socket setup ───────────────── */
   const socketRef = useRef(null);
@@ -164,6 +178,39 @@ export default function RoomEditorPage() {
     setIsRunning(false);
   };
 
+  // Set user ID on mount
+  useEffect(() => {
+    setMyId(getOrCreateUserId());
+  }, []);
+
+  // Listen for chat messages
+  useEffect(() => {
+    if (!socketRef.current) return;
+    const socket = socketRef.current;
+
+    const handleMessage = (msg) => {
+      setMessages((prev) => [...prev, msg]);
+    };
+
+    socket.on('message', handleMessage);
+
+    return () => {
+      socket.off('message', handleMessage);
+    };
+  }, [roomId]);
+
+  // Send chat message
+  const sendMessage = (text) => {
+    if (!myId || !text.trim() || !socketRef.current) return;
+    const messageData = {
+      text,
+      senderId: myId,
+      timestamp: new Date().toISOString(),
+      roomId, // so messages are scoped to room
+    };
+    socketRef.current.emit('message', messageData);
+  };
+
   /* ───────────────── render ───────────────── */
   return (
     <div className='bg-gray-800'>
@@ -246,6 +293,21 @@ export default function RoomEditorPage() {
         <div className='text-gray-400 '>Output:</div>
         {output}
       </pre>
+
+      {/* Chat Section */}
+      {activeTab === "chat" && (
+        <div className="absolute right-0 top-[100px] mr-6">
+          <ChatWindow messages={messages} onSend={sendMessage} myId={myId} />
+        </div>
+      )}
+
+      {/* Participants Section */}
+      {activeTab === "participants" && (
+        <div className="absolute right-0 top-[100px] mr-6 bg-gray-700 rounded-lg p-4 w-[400px] h-[500px] text-white">
+          {/* You can fill this with participant info later */}
+          <div>Participants list coming soon...</div>
+        </div>
+      )}
     </div>
   );
 }
