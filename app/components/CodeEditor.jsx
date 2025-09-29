@@ -52,7 +52,7 @@ const CodeEditor = ({ language, fileName, starterCode, value, onChange }) => {
       {isThemeReady ? (
         <Editor
           className="border border-t-0 border-gray-800"
-          height="59vh"
+          height="60vh"
           width="72vw"
           value={value}
           language={language}

@@ -48,7 +48,7 @@ const ChatWindow = ({ messages, onSend, myId }) => {
         {messages.map((msg, idx) => {
           const isMine = myId && String(msg.senderId) === String(myId);
           return (
-            <div
+            <div 
               key={idx}
               className={`${styles.message} ${
                 isMine ? styles.sent : styles.received

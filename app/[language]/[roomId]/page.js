@@ -289,25 +289,31 @@ export default function RoomEditorPage() {
       />
 
       {/* Output */}
-      <pre className="outputSection bg-gray-800 text-white absolute top-[500px]  h-[25vh] w-[72vw] border border-gray-700 ">
+      <pre className="outputSection bg-gray-800 text-white absolute top-[502px]  h-[25vh] w-[72vw] border-1 border-[#444] ">
         <div className='text-gray-400 '>Output:</div>
         {output}
       </pre>
 
       {/* Chat Section */}
       {activeTab === "chat" && (
-        <div className="absolute right-0 top-[100px] mr-6">
+        <div className="absolute right-0 top-[105px]">
           <ChatWindow messages={messages} onSend={sendMessage} myId={myId} />
         </div>
       )}
 
       {/* Participants Section */}
       {activeTab === "participants" && (
-        <div className="absolute right-0 top-[100px] mr-6 bg-gray-700 rounded-lg p-4 w-[400px] h-[500px] text-white">
+        <div className="absolute right-0 top-[100px]  bg-gray-700 rounded-lg p-4 w-[357px] h-[570px] text-white">
           {/* You can fill this with participant info later */}
           <div>Participants list coming soon...</div>
         </div>
       )}
+
+      {/* Video Call button */}
+      <div className="">
+        <button className= "p-1.5 text-gray-800 rounded absolute bottom-[10px] right-[5px] cursor-pointer w-[350px] font-medium bg-green-500"> Join Call</button>
+      </div>
+
     </div>
   );
 }
