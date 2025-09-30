@@ -291,11 +291,22 @@ export default function RoomEditorPage() {
 
       {/* Participants Section */}
       {activeTab === "participants" && (
-        <div className="absolute right-0 top-[100px]  bg-gray-700 rounded-lg p-4 w-[357px] h-[570px] text-white">
-          {/* You can fill this with participant info later */}
-          <div>Participants list coming soon...</div>
-        </div>
-      )}
+  <div
+    className="
+      absolute right-0 top-[100px] 
+      w-[360px] h-[571px] 
+      border border-[#444] 
+      flex flex-col 
+      overflow-hidden 
+      bg-[#1e2939] 
+      text-white 
+      font-sans 
+    "
+  >
+    <div className='p-2'>Participants list coming soon...</div>
+  </div>
+)}
+
 
       {/* Border Box */}
       <div className='border-1 border-gray-700 absolute right-0 w-[360px] h-[60px] text-[#1e2939]'> . </div>
