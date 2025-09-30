@@ -8,6 +8,7 @@ import { faPlay, faSpinner } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fileNames, starterCodes } from '../../utils/languageData';
 import ChatWindow from '../../components/ChatWindow'; // <-- Add this import
+import VideoWindow from '../../components/VideoWindow'; // <-- Add this import
 
 const MonacoEditor = dynamic(() => import('../../components/CodeEditor'), { ssr: false });
 
@@ -84,9 +85,10 @@ export default function RoomEditorPage() {
   const [code, setCode] = useState('');
   const [output, setOutput] = useState('');
   const [isRunning, setIsRunning] = useState(false);
-  const [activeTab, setActiveTab] = useState("chat"); // for Chat | Participants toggle
+  const [activeTab, setActiveTab] = useState("chat");
   const [messages, setMessages] = useState([]);
   const [myId, setMyId] = useState(null);
+  const [showVideo, setShowVideo] = useState(false); // <-- Add this state
 
   /* ───────────────── socket setup ───────────────── */
   const socketRef = useRef(null);
@@ -316,8 +318,16 @@ export default function RoomEditorPage() {
   
       {/* Video Call button */}
       <div className="">
-        <button className= "p-1.5 text-gray-800 rounded absolute bottom-[18px] right-[23px] cursor-pointer w-[313px] font-medium bg-green-500 "> Join Call</button>
+        <button
+          className="p-1.5 text-gray-800 rounded absolute bottom-[18px] right-[23px] cursor-pointer w-[313px] font-medium bg-green-500"
+          onClick={() => setShowVideo(true)}
+        >
+          Join Call
+        </button>
       </div>
+      {showVideo && (
+        <VideoWindow onClose={() => setShowVideo(false)} />
+      )}
 
     </div>
   );
