@@ -4,7 +4,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 import dynamic from 'next/dynamic';
-import { faPlay, faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { faPlay, faSpinner, faCopy, faSignOutAlt } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fileNames, starterCodes } from '../../utils/languageData';
 import ChatWindow from '../../components/ChatWindow'; // <-- Add this import
@@ -87,6 +87,7 @@ export default function RoomEditorPage() {
   const [activeTab, setActiveTab] = useState("chat"); // for Chat | Participants toggle
   const [messages, setMessages] = useState([]);
   const [myId, setMyId] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
 
   /* ───────────────── socket setup ───────────────── */
   const socketRef = useRef(null);
@@ -178,9 +179,42 @@ export default function RoomEditorPage() {
     setIsRunning(false);
   };
 
-  // Set user ID on mount
+  // Set user ID and check admin on mount
   useEffect(() => {
-    setMyId(getOrCreateUserId());
+    const id = getOrCreateUserId();
+    setMyId(id);
+
+    // Check if this user is admin (first to join)
+    fetch(`/api/rooms/${roomId}`)
+      .then(res => res.json())
+      .then(room => {
+        if (room && room.adminId === id) setIsAdmin(true);
+      });
+  }, []);
+
+  // Leave room handler
+  const handleLeaveRoom = async () => {
+    if (isAdmin) {
+      // Notify all users and delete room
+      socketRef.current.emit('admin-leave', { roomId });
+      await fetch(`/api/rooms/${roomId}`, { method: 'DELETE' });
+    } else {
+      socketRef.current.emit('guest-leave', { roomId, userId: myId });
+    }
+    router.push('/'); // Redirect to home or lobby
+  };
+
+  // Listen for admin-leave event
+  useEffect(() => {
+    if (!socketRef.current) return;
+    const socket = socketRef.current;
+    socket.on('admin-leave', () => {
+      alert('Admin has left. Room is closed.');
+      router.push('/');
+    });
+    return () => {
+      socket.off('admin-leave');
+    };
   }, []);
 
   // Listen for chat messages
@@ -214,13 +248,36 @@ export default function RoomEditorPage() {
   /* ───────────────── render ───────────────── */
   return (
     <div className='bg-gray-800'>
-
-
-
       {/* Header */}
-      <div className=" text-xl font-semibold capitalize relative top-[10px] ml-[9px] flex justify-between pr-4 text-white">
+      <div className="text-xl font-semibold capitalize relative top-[10px] ml-[9px] flex justify-between pr-4 text-white">
         <div>Online {editorLanguage} Compiler</div>
-        <div className="text-sm text-white">Room ID: {roomId}</div>
+        <div className="flex flex-col items-end">
+          <div className="flex items-center">
+            <span className="text-sm text-white mr-2">Room ID: {roomId}</span>
+            <button
+              className="ml-1 px-2 py-1 text-xs bg-gray-700 text-white rounded hover:bg-gray-600"
+              onClick={() => navigator.clipboard.writeText(roomId)}
+              title="Copy Room ID"
+            >
+              <FontAwesomeIcon icon={faCopy} />
+            </button>
+          </div>
+          {/* <button
+            className="mt-2 flex items-center text-red-400 bg-[#23293a] px-3 py-1 rounded hover:bg-[#23293a]/80"
+            onClick={handleLeaveRoom}
+          >
+            <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+            Leave Room
+          </button> */}
+          {/* <button
+            className="bg-red-500 mt-2 flex items-center text-black-400  px-2 py-2 rounded text-sm hover:bg-red-600  absolute right-[381px] top-[-8px]"
+            onClick={handleLeaveRoom}
+          >
+            <FontAwesomeIcon icon={faSignOutAlt} className="mr-1 text-sm" />
+            Leave Room
+          </button> */}
+
+        </div>
       </div>
 
       {/* Top bar */}
@@ -252,8 +309,8 @@ export default function RoomEditorPage() {
           Participants
         </button>
       </div>
-      
-      {/* RUN button */}  
+
+      {/* RUN button */}
       <button
         onClick={runCode}
         className="p-1.5 text-gray-800 rounded absolute top-[60px] left-[64%] cursor-pointer w-[86px] font-medium bg-green-500"
@@ -291,8 +348,8 @@ export default function RoomEditorPage() {
 
       {/* Participants Section */}
       {activeTab === "participants" && (
-  <div
-    className="
+        <div
+          className="
       absolute right-0 top-[100px] 
       w-[360px] h-[571px] 
       border border-[#444] 
@@ -302,10 +359,10 @@ export default function RoomEditorPage() {
       text-white 
       font-sans 
     "
-  >
-    <div className='p-2'>Participants list coming soon...</div>
-  </div>
-)}
+        >
+          <div className='p-2'>Participants list coming soon...</div>
+        </div>
+      )}
 
 
       {/* Border Box */}
@@ -313,10 +370,21 @@ export default function RoomEditorPage() {
       <div className='border-1 border-gray-700 absolute right-0 bottom-[70px] w-[360px] h-0 text-[#1e2939]'> . </div>
       {/* Border Box */}
       <div className='border-1 border-l-0 border-t-0 border-gray-700 absolute top-0 right-0 w-[360px] h-[51px] text-[#1e2939]'> . </div>
-  
-      {/* Video Call button */}
-      <div className="">
-        <button className= "p-1.5 text-gray-800 rounded absolute bottom-[18px] right-[23px] cursor-pointer w-[313px] font-medium bg-green-500 "> Join Call</button>
+
+      {/* Video Call & Leave Room buttons */}
+      <div className="absolute bottom-[18px] right-[36px] flex gap-3">
+        <button
+          className=" cursor-pointer p-1.5 text-gray-800 rounded w-[140px] font-medium bg-green-500 hover:bg-green-600"
+        >
+          Join Call
+        </button>
+        <button
+          className="flex items-center text-black bg-red-500 px-3 py-1 rounded hover:bg-red-600 cursor-pointer"
+          onClick={handleLeaveRoom}
+        >
+          <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+          Leave Room
+        </button>
       </div>
 
     </div>

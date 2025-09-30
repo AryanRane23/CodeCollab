@@ -17,3 +17,14 @@ export async function GET(req, { params }) {
   } 
 }
 
+export async function DELETE(req, { params }) {
+  try {
+    await connectDB();
+    const { roomCode } = params;
+    await Room.findByIdAndDelete(roomCode);
+    return new Response(JSON.stringify({ success: true }), { status: 200 });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+  }
+}
+

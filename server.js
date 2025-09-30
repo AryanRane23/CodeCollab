@@ -55,6 +55,17 @@ app.prepare().then(() => {
       }
     });
     // --- END CHAT ---
+
+    socket.on('admin-leave', ({ roomId }) => {
+      io.to(roomId).emit('admin-leave');
+      // Optionally: remove room from in-memory store if you use one
+      rooms.delete(roomId);
+    });
+
+    socket.on('guest-leave', ({ roomId, userId }) => {
+      socket.leave(roomId);
+      // Optionally: notify others if needed
+    });
   });
 
   server.listen(3000, () => {
