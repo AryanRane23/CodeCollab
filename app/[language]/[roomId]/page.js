@@ -8,6 +8,7 @@ import { faPlay, faSpinner, faCopy, faSignOutAlt } from '@fortawesome/free-solid
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fileNames, starterCodes } from '../../utils/languageData';
 import ChatWindow from '../../components/ChatWindow'; // <-- Add this import
+import VideoWindow from '../../components/VideoWindow';
 
 const MonacoEditor = dynamic(() => import('../../components/CodeEditor'), { ssr: false });
 
@@ -88,6 +89,7 @@ export default function RoomEditorPage() {
   const [messages, setMessages] = useState([]);
   const [myId, setMyId] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [showVideo, setShowVideo] = useState(false);
 
   /* ───────────────── socket setup ───────────────── */
   const socketRef = useRef(null);
@@ -373,13 +375,26 @@ export default function RoomEditorPage() {
 
       {/* Video Call & Leave Room buttons */}
       <div className="absolute bottom-[18px] right-[36px] flex gap-3">
-        <button
+        {/* <button
           className=" cursor-pointer p-1.5 text-gray-800 rounded w-[140px] font-medium bg-green-500 hover:bg-green-600"
         >
           Join Call
-        </button>
+        </button> */}
+        <div className="">
         <button
-          className="flex items-center text-black bg-red-500 px-3 py-1 rounded hover:bg-red-600 cursor-pointer"
+          className="p-1.5 text-gray-800 rounded absolute bottom-[9px] right-[149px] cursor-pointer font-medium bg-green-500 w-[156px]"
+          onClick={() => setShowVideo(true)}
+        >
+          Join Call
+        </button>
+      </div>
+      {showVideo && (
+        <VideoWindow onClose={() => setShowVideo(false)} />
+      )}
+
+    
+        <button
+          className="absolute bottom-[8px] right-[-8px] w-[149px] h-[37px] text-black bg-red-500 px-3 py-1 rounded hover:bg-red-600 cursor-pointer"
           onClick={handleLeaveRoom}
         >
           <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
