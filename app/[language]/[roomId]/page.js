@@ -228,7 +228,7 @@ export default function RoomEditorPage() {
         className="border border-gray-700 bg-gray-800 fileName box-border absolute top-[50px] w-[72vw] h-[8%] "
       />
 
-{/* Chat | Participants Toggle */}
+      {/* Chat | Participants Toggle */}
       <div className="absolute right-0 mt-7 bg-gray-700 rounded-full w-fit p-1.5 mr-6  flex">
         {/* Sliding highlight */}
         <div
@@ -252,19 +252,7 @@ export default function RoomEditorPage() {
           Participants
         </button>
       </div>
-
-
-      {/* Chat | Participants */}
-      {/* <div className="absolute right-0 mt-7 bg-gray-700 rounded-full w-fit p-1 mr-6">
-        <button className="px-4 py-1 rounded-full bg-gray-600 text-white w-[150px] cursor-pointer">
-          Chat
-        </button>
-        <button className="px-4 py-1 rounded-full text-white hover:bg-gray-600 w-[150px] cursor-pointer">
-          Participants
-        </button>
-      </div> */}
       
-
       {/* RUN button */}  
       <button
         onClick={runCode}
@@ -289,7 +277,7 @@ export default function RoomEditorPage() {
       />
 
       {/* Output */}
-      <pre className="outputSection bg-gray-800 text-white absolute top-[502px]  h-[25vh] w-[72vw] border-1 border-[#444] ">
+      <pre className="outputSection bg-gray-800 text-white absolute h-[20vh] w-[72vw] border-1 border-[#444] bottom-0 ">
         <div className='text-gray-400 '>Output:</div>
         {output}
       </pre>
@@ -309,9 +297,14 @@ export default function RoomEditorPage() {
         </div>
       )}
 
+      {/* Border Box */}
+      <div className='border-1 border-gray-700 absolute right-0 w-[360px] h-[60px] text-[#1e2939]'> . </div>
+      {/* Border Box */}
+      <div className='border-1 border-l-0 border-t-0 border-gray-700 absolute top-0 right-0 w-[360px] h-[51px] text-[#1e2939]'> . </div>
+  
       {/* Video Call button */}
       <div className="">
-        <button className= "p-1.5 text-gray-800 rounded absolute bottom-[10px] right-[5px] cursor-pointer w-[350px] font-medium bg-green-500"> Join Call</button>
+        <button className= "p-1.5 text-gray-800 rounded absolute bottom-[18px] right-[23px] cursor-pointer w-[313px] font-medium bg-green-500 "> Join Call</button>
       </div>
 
     </div>
