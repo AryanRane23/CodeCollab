@@ -309,7 +309,8 @@ export default function RoomEditorPage() {
 
 
       {/* Border Box */}
-      <div className='border-1 border-gray-700 absolute right-0 w-[360px] h-[60px] text-[#1e2939]'> . </div>
+      <div className='border-1 border-gray-700 absolute right-0 w-[360px] h-0 text-[#1e2939]'> . </div>
+      <div className='border-1 border-gray-700 absolute right-0 bottom-[70px] w-[360px] h-0 text-[#1e2939]'> . </div>
       {/* Border Box */}
       <div className='border-1 border-l-0 border-t-0 border-gray-700 absolute top-0 right-0 w-[360px] h-[51px] text-[#1e2939]'> . </div>
   
