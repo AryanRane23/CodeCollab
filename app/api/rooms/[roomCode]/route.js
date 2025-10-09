@@ -28,3 +28,21 @@ export async function DELETE(req, { params }) {
   }
 }
 
+// Create a new room -> POST
+export async function POST(req) {
+  try {
+    await connectDB();
+    const { roomId, language } = await req.json(); // adminId removed
+
+    const newRoom = new Room({
+      _id: roomId,
+      language
+    });
+
+    await newRoom.save();
+    return new Response(JSON.stringify({ success: true, room: newRoom }), { status: 201 });
+  } catch (error) {
+    return new Response(JSON.stringify({ error: error.message }), { status: 500 });
+  }
+}
+

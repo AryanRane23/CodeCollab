@@ -247,6 +247,25 @@ export default function RoomEditorPage() {
     socketRef.current.emit('message', messageData);
   };
 
+  // Create room handler
+  // const handleCreateRoom = async () => {
+  //   const myId = getOrCreateUserId(); // or however you get the current user ID
+  //   const roomId = generateRoomId();  // your logic for room ID
+  //   const language = selectedLanguage; // your logic for language
+
+  //   await fetch('/api/rooms', {
+  //     method: 'POST',
+  //     headers: { 'Content-Type': 'application/json' },
+  //     body: JSON.stringify({
+  //       roomId,
+  //       language
+  //       // adminId removed
+  //     })
+  //   });
+
+    // ...then redirect to the room, etc.
+  // };
+
   /* ───────────────── render ───────────────── */
   return (
     <div className='bg-gray-800'>
@@ -264,21 +283,6 @@ export default function RoomEditorPage() {
               <FontAwesomeIcon icon={faCopy} />
             </button>
           </div>
-          {/* <button
-            className="mt-2 flex items-center text-red-400 bg-[#23293a] px-3 py-1 rounded hover:bg-[#23293a]/80"
-            onClick={handleLeaveRoom}
-          >
-            <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
-            Leave Room
-          </button> */}
-          {/* <button
-            className="bg-red-500 mt-2 flex items-center text-black-400  px-2 py-2 rounded text-sm hover:bg-red-600  absolute right-[381px] top-[-8px]"
-            onClick={handleLeaveRoom}
-          >
-            <FontAwesomeIcon icon={faSignOutAlt} className="mr-1 text-sm" />
-            Leave Room
-          </button> */}
-
         </div>
       </div>
 

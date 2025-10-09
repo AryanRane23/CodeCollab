@@ -5,7 +5,7 @@ import Room from '../../models/Room';
 export async function POST(req) {
   try {
     await connectDB();
-    const { roomId, language } = await req.json();
+    const { roomId, language } = await req.json(); // adminId removed
 
     // Check if room already exists
     const existingRoom = await Room.findById(roomId);
@@ -13,7 +13,7 @@ export async function POST(req) {
       return new Response(JSON.stringify({ error: 'Room already exists' }), { status: 400 });
     }
 
-    // Create new room
+    // Create new room WITHOUT adminId
     const newRoom = await Room.create({ _id: roomId, language });
 
     return new Response(JSON.stringify(newRoom), { status: 201 });
