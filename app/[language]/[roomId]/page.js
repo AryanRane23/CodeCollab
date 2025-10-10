@@ -8,7 +8,7 @@ import { faPlay, faSpinner, faCopy, faSignOutAlt } from '@fortawesome/free-solid
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fileNames, starterCodes } from '../../utils/languageData';
 import ChatWindow from '../../components/ChatWindow'; // <-- Add this import
-import VideoWindow from '../../components/VideoWindow';
+import VideoCall from '../../components/VideoCall';
 
 const MonacoEditor = dynamic(() => import('../../components/CodeEditor'), { ssr: false });
 
@@ -393,7 +393,7 @@ export default function RoomEditorPage() {
         </button>
       </div>
       {showVideo && (
-        <VideoWindow onClose={() => setShowVideo(false)} />
+        <VideoCall roomId={roomId} userId={myId || ''} onClose={() => setShowVideo(false)} />
       )}
 
     
