@@ -58,19 +58,13 @@ export default function HomePage() {
       <p className="text-mono text-center text-gray-300 mb-6 absolute right-[260px] top-[167px]   ">
         Experience the future of collaborative coding with our real-time platform including audio/video features.<br></br>
         Connect with developers worldwide, share ideas instantly, and build together effortlessly with us.</p>
-
-      {/* <a
-        // href="/signup"
-        href={status === "authenticated" ? "/home" : "/signup"}
-        className="inline-flex items-center gap-2 justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:pointer-events-none disabled:opacity-50 bg-gradient-to-tl from-indigo-500 to-fuchsia-500 text-white px-4 py-2 h-[42px]  z-10 hover:opacity-90 absolute right-[588px] bottom-[367px]">
-        Get Started
-      </a> */}
+        
       <button
         onClick={() => {
           if (status === "authenticated") router.push("/home");
           else router.push("/signup");
         }}
-        className=" cursor-pointer inline-flex items-center gap-2 justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:pointer-events-none disabled:opacity-50 bg-gradient-to-tl from-indigo-500 to-fuchsia-500 text-white px-4 py-2 h-[42px] z-10 hover:opacity-90 absolute right-[588px] bottom-[350px]">
+        className=" cursor-pointer inline-flex items-center gap-2 justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-indigo-500 disabled:pointer-events-none disabled:opacity-50 bg-gradient-to-tl from-indigo-500 to-fuchsia-500 text-white px-4 py-2 h-[42px] z-10 hover:opacity-90 absolute right-[588px] bottom-[380px]">
         Get Started
       </button>
 

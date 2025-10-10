@@ -210,8 +210,8 @@ export default function VideoCall({ roomId, userId, onClose }) {
         ) : (
           <button onClick={() => setIsMinimized(true)} title="Minimize" style={{ marginRight: 8 }}>🗕</button>
         )}
-        <button onClick={() => { hangUp(false); }} title="Hang Up" style={{ marginRight: 8, backgroundColor: '#ef4444', color: 'black', border: 'none', padding: '4px 8px', borderRadius: 6, position:'absolute', left:'0',  fontSize: 'x-small',  marginLeft: '10px', marginBottom:'6px', marginTop:'6px' }}>Hang Up</button>
-        <button onClick={() => { if (onClose) onClose(); }} title="Close" style={{ marginLeft: 8, background: 'transparent', color: '#fff', border: 'none' }}>✖</button>
+        <button onClick={() => { hangUp(false); }} title="Hang Up" style={{ marginRight: 8, backgroundColor: '#ef4444', color: 'black', border: 'none', padding: '4px 8px', borderRadius: 6, position:'absolute', left:'0',  fontSize: 'x-small',  marginLeft: '10px', marginBottom:'6px', marginTop:'6px', cursor:'pointer'}}>Hang Up</button>
+        <button onClick={() => { if (onClose) onClose(); }} title="Close" style={{ marginLeft: 8, background: 'transparent', color: '#fff', border: 'none', cursor:'pointer' }}>✖</button>
       </div>
 
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>
@@ -256,7 +256,7 @@ export default function VideoCall({ roomId, userId, onClose }) {
         {/* Controls */}
         <div style={{ position: 'absolute', top: '104px', right: '8px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {!joined ? (  
-            <button onClick={joinSession} style={{position:'absolute',right: '9px', top: '38px', backgroundColor: '#10b981', color: 'black', borderRadius: '8px', padding: '3px', border: 'none',width: '56px', fontSize:'13px',  }}>Join</button>
+            <button onClick={joinSession} style={{position:'absolute',right: '9px', top: '38px', backgroundColor: '#10b981', color: 'black', borderRadius: '8px', padding: '3px', border: 'none',width: '56px', fontSize:'13px', cursor:'pointer'  }}>Join</button>
           ) : (
             <>
               <button onClick={toggleVideo} style={{ backgroundColor: !videoOn? '#e53e3e' : 'white', color: 'black', borderRadius: '27%', padding: '10px', border: 'none', cursor: 'pointer', fontSize: '18px', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '34px', height: '34px' }} title={!videoOn ? 'Turn on video' : 'Turn off video'}>
