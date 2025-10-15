@@ -211,7 +211,7 @@ export default function VideoCall({ roomId, userId, onClose }) {
           <button onClick={() => setIsMinimized(true)} title="Minimize" style={{ marginRight: 8 }}>🗕</button>
         )}
         <button onClick={() => { hangUp(false); }} title="Hang Up" style={{ marginRight: 8, backgroundColor: '#ef4444', color: 'black', border: 'none', padding: '4px 8px', borderRadius: 6, position:'absolute', left:'0',  fontSize: 'x-small',  marginLeft: '10px', marginBottom:'6px', marginTop:'6px', cursor:'pointer'}}>Hang Up</button>
-        <button onClick={() => { if (onClose) onClose(); }} title="Close" style={{ marginLeft: 8, background: 'transparent', color: '#fff', border: 'none', cursor:'pointer' }}>✖</button>
+        <button onClick={() => { if (onClose) onClose(); }} title="Close" style={{ marginLeft: 8, background: 'transparent', color: '#fff', border: 'none', cursor:'p' }}>✖</button>
       </div>
 
       <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative' }}>

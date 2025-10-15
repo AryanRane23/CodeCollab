@@ -319,7 +319,7 @@ export default function RoomEditorPage() {
       {/* RUN button */}
       <button
         onClick={runCode}
-        className="p-1.5 text-gray-800 rounded absolute top-[60px] left-[64%] cursor-pointer w-[86px] font-medium bg-green-500"
+        className="p-1.5 text-gray-800 rounded absolute top-[57px] left-[64%] cursor-pointer w-[86px] font-medium bg-green-500"
       >
         {isRunning ? (
           <FontAwesomeIcon icon={faSpinner} />
@@ -345,19 +345,35 @@ export default function RoomEditorPage() {
         {output}
       </pre>
 
-      {/* Chat Section */}
+     
+
+     
+ <div
+          className="
+      absolute right-0 top-[100px] 
+      w-[359px] h-[537px] 
+      border border-[#444] 
+      flex flex-col 
+      overflow-hidden 
+      bg-[#1e2939] 
+      text-white 
+      font-sans 
+    "
+        >
+ {/* Chat Section */}
       {activeTab === "chat" && (
         <div className="absolute right-0 top-[105px]">
           <ChatWindow messages={messages} onSend={sendMessage} myId={myId} />
         </div>
       )}
-
+          
+        </div>
       {/* Participants Section */}
       {activeTab === "participants" && (
         <div
           className="
       absolute right-0 top-[100px] 
-      w-[360px] h-[571px] 
+      w-[359px] h-[537px] 
       border border-[#444] 
       flex flex-col 
       overflow-hidden 
@@ -372,21 +388,16 @@ export default function RoomEditorPage() {
 
 
       {/* Border Box */}
-      <div className='border-1 border-gray-700 absolute right-0 w-[360px] h-0 text-[#1e2939]'> . </div>
+      <div className='border-1 border-gray-700 absolute right-0 w-[360px] h-0 text-[#1e2939] bottom-[127px]'> . </div>
       <div className='border-1 border-gray-700 absolute right-0 bottom-[70px] w-[360px] h-0 text-[#1e2939]'> . </div>
       {/* Border Box */}
       <div className='border-1 border-l-0 border-t-0 border-gray-700 absolute top-0 right-0 w-[360px] h-[51px] text-[#1e2939]'> . </div>
-
+   
       {/* Video Call & Leave Room buttons */}
       <div className="absolute bottom-[18px] right-[36px] flex gap-3">
-        {/* <button
-          className=" cursor-pointer p-1.5 text-gray-800 rounded w-[140px] font-medium bg-green-500 hover:bg-green-600"
-        >
-          Join Call
-        </button> */}
         <div className="">
         <button
-          className="p-1.5 text-gray-800 rounded absolute bottom-[9px] right-[149px] cursor-pointer font-medium bg-green-500 w-[156px]"
+          className="p-1.5 text-gray-800 rounded absolute bottom-[1px] right-[149px] cursor-pointer font-medium bg-green-500 w-[156px]"
           onClick={() => setShowVideo(true)}
         >
           Join Call
@@ -396,9 +407,8 @@ export default function RoomEditorPage() {
         <VideoCall roomId={roomId} userId={myId || ''} onClose={() => setShowVideo(false)} />
       )}
 
-    
         <button
-          className="absolute bottom-[8px] right-[-8px] w-[149px] h-[37px] text-black bg-red-500 px-3 py-1 rounded hover:bg-red-600 cursor-pointer"
+          className="absolute bottom-[1px] right-[-8px] w-[149px] h-[37px] text-black bg-red-500 px-3 py-1 rounded hover:bg-red-600 cursor-pointer"
           onClick={handleLeaveRoom}
         >
           <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />

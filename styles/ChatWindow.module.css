@@ -1,7 +1,8 @@
 .chatWindow {
   width: 360px;
-  height: 566px;
-  border: 1px solid #444;
+  /* height: 566px; */
+
+    height: 532px;  
   /* border-radius: 12px; */
   display: flex;
   flex-direction: column;
@@ -22,6 +23,8 @@
   gap: 8px;
   scrollbar-width: thin;
   scrollbar-color: #8888 #222;
+  border: #4a5568;
+   border-width: 10px;
 }
 
 .messages::-webkit-scrollbar {
