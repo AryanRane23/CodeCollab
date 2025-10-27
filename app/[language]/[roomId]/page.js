@@ -272,18 +272,7 @@ export default function RoomEditorPage() {
       {/* Header */}
       <div className="text-xl font-semibold capitalize relative top-[10px] ml-[9px] flex justify-between pr-4 text-white">
         <div>Online {editorLanguage} Compiler</div>
-        <div className="flex flex-col items-end">
-          <div className="flex items-center">
-            <span className="text-sm text-white mr-2">Room ID: {roomId}</span>
-            <button
-              className="ml-1 px-2 py-1 text-xs bg-gray-700 text-white rounded hover:bg-gray-600"
-              onClick={() => navigator.clipboard.writeText(roomId)}
-              title="Copy Room ID"
-            >
-              <FontAwesomeIcon icon={faCopy} />
-            </button>
-          </div>
-        </div>
+       
       </div>
 
       {/* Top bar */}
@@ -351,7 +340,7 @@ export default function RoomEditorPage() {
  <div
           className="
       absolute right-0 top-[100px] 
-      w-[359px] h-[537px] 
+      w-[359px] h-[571px] 
       border border-[#444] 
       flex flex-col 
       overflow-hidden 
@@ -393,6 +382,19 @@ export default function RoomEditorPage() {
       {/* Border Box */}
       <div className='border-1 border-l-0 border-t-0 border-gray-700 absolute top-0 right-0 w-[360px] h-[51px] text-[#1e2939]'> . </div>
    
+    {/* ROOM ID - copy/paste */}
+          <div className="fixed top-0 right-0 mt-2.5">
+            <span className="text-sm text-white mr-2">Room ID: {roomId}</span>
+            <button
+              className="cursor-pointer ml-1 px-2 py-1 text-xs bg-gray-700 text-white rounded hover:bg-gray-600"
+              onClick={() => navigator.clipboard.writeText(roomId)}
+              title="Copy Room ID"
+            >
+              <FontAwesomeIcon icon={faCopy} />
+            </button>
+          </div>
+
+        
       {/* Video Call & Leave Room buttons */}
       <div className="absolute bottom-[18px] right-[36px] flex gap-3">
         <div className="">
