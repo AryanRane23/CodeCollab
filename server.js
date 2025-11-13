@@ -104,7 +104,12 @@ app.prepare().then(() => {
     });
   });
 
-  server.listen(3000, () => {
-    console.log('✅ Server ready on http://localhost:3000');
+  // server.listen(3000, () => {
+  //   console.log('✅ Server ready on http://localhost:3000');
+  // });
+  const PORT = parseInt(process.env.PORT, 10) || 3000;
+  server.listen(PORT, () => {
+    console.log(`✅ Server ready on port: ${PORT}`);
   });
+  
 });
