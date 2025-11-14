@@ -9,7 +9,10 @@ const app = next({ dev });
 const handle = app.getRequestHandler();
 
 app.prepare().then(() => {
-  const server = createServer(handle);
+  // const server = createServer(handle);
+  const server = createServer((req, res) => {
+    handle(req, res);
+  });
 
   const io = new Server(server, {
     path: '/api/socket',
@@ -111,5 +114,5 @@ app.prepare().then(() => {
   server.listen(PORT, () => {
     console.log(`✅ Server ready on port: ${PORT}`);
   });
-  
+
 });
