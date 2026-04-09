@@ -21,7 +21,11 @@ const geistMono = Geist_Mono({
 
 export const metadata = {
   title: "CodeCollab ",
-  description: "Collaborate Live",
+  description: "Real-time Collaborative Code Editor",
+  verification : {
+   google:"CgUMmZ0KjZleuojwcwxsYlTirPeGh8DZH6zJjOmr5UI"
+  }
+  
 };
 
 export default function RootLayout({ children }) {
