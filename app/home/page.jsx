@@ -42,7 +42,7 @@ export default function HomePage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#121212] text-white">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#121212] text-white w-full overflow-x-hidden relative">
 
       <h3 className='text-amber-50 font-bold absolute top-[20px] left-[20px]'>CodeCollab</h3>
 
@@ -60,9 +60,9 @@ export default function HomePage() {
       {/* Description */}
       <div className='absolute top-[130px] text-center text-gray-200'>
         Your interactive coding workspace awaits! Easily create a new room or join an existing one, collaborate with teammates, share ideas instantly, and <br /> build projects together seamlessly in real-time, all in one unified platform
-      </div>
+      </div>  
 
-      <div className="flex gap-[600px]">
+      <div className="flex flex-col lg:flex-row gap-8 lg:gap-16 items-center justify-center w-full max-w-5xl  mt-16 ">
         {/* Card 1 - Create Room */}  
         <div className={styles.container}>
           <div className={styles.box}>

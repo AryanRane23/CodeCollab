@@ -40,11 +40,13 @@
 } */
 
 .container .box {
-  width: 419px;
-  height: 250px;
-  position:absolute;
-  right: -187px;
-  top: -17px;
+  /* Made responsive so it doesn't break on mobile screens */
+  width: 100%;
+  max-width: 419px; 
+  min-height: 250px; 
+  
+  /* Changed to relative and removed the crazy top/right offsets */
+  position: relative; 
 
   padding: 1rem;
   background-color: rgba(81, 81, 125, 0.074);
@@ -53,9 +55,8 @@
   backdrop-filter: blur(20px);
   border-radius: 0.7rem;
   transition: all ease 0.3s;
-}
-
-.container .box {
+  
+  /* Keep your flex layout for the inside of the box */
   display: flex;
   flex-direction: column;
   justify-content: space-between;

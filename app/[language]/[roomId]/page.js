@@ -276,39 +276,42 @@ export default function RoomEditorPage() {
       </div>
 
       {/* Top bar */}
-      <div
-        className="border border-gray-700 bg-gray-800 fileName box-border absolute top-[50px] w-[72vw] h-[8%] "
+   <div
+        className="border border-gray-700 bg-gray-800 fileName box-border absolute top-[50px] left-0 w-full lg:w-[calc(100%-360px)] h-[52px] rounded-none lg:rounded-tr-4xl z-0"
       />
 
       {/* Chat | Participants Toggle */}
-      <div className="absolute right-0 mt-7 bg-gray-700 rounded-full w-fit p-1.5 mr-6  flex">
+      {/* <div className="absolute right-0 mt-5 bg-gray-700 rounded-full w-fit p-1.5 mr-6  flex"> */}
+     {/* Notice w-fit instead of a hardcoded pixel width */}
+      <div className="absolute right-0 mt-[20px] bg-gray-700 rounded-full w-fit p-1.5 mr-6 flex z-20">
+     
         {/* Sliding highlight */}
-        <div
+        {/* <div
           className="absolute top-1 left-1 h-[36px] w-[150px] rounded-full bg-gray-600 transition-transform duration-300"
           style={{
             transform: activeTab === "chat" ? "translateX(0)" : "translateX(150px)",
           }}
-        ></div>
+        ></div> */}
 
         {/* Buttons */}
-        <button
-          className="px-4 py-1 rounded-full w-[150px] text-white relative z-10 cursor-pointer"
+       <button
+          className="flex-1 min-w-[140px] sm:min-w-[180px] lg:min-w-[280px] px-2 sm:px-4 py-1.5 rounded-full text-white text-sm sm:text-base whitespace-nowrap relative z-10 cursor-pointer transition-all"
           onClick={() => setActiveTab("chat")}
         >
-          Chat
+          Live Chat Window
         </button>
-        <button
+        {/* <button
           className="px-4 py-1 rounded-full w-[150px] text-white relative z-10 cursor-pointer"
           onClick={() => setActiveTab("participants")}
         >
           Participants
-        </button>
+        </button> */}
       </div>
 
       {/* RUN button */}
       <button
         onClick={runCode}
-        className="p-1.5 text-gray-800 rounded absolute top-[57px] left-[64%] cursor-pointer w-[86px] font-medium bg-green-500"
+        className="p-1.5 text-gray-800 rounded absolute top-[57px] left-[calc(72vw-110px)] cursor-pointer w-[86px] font-medium bg-green-500 z-30 shadow-md"
       >
         {isRunning ? (
           <FontAwesomeIcon icon={faSpinner} />
@@ -329,34 +332,25 @@ export default function RoomEditorPage() {
       />
 
       {/* Output */}
-      <pre className="outputSection bg-gray-800 text-white absolute h-[20vh] w-[72vw] border-1 border-[#444] bottom-0 ">
+      <pre className="outputSection bg-gray-800 text-white absolute h-[20vh] w-[72vw]  border-[#444] bottom-0 ">
         <div className='text-gray-400 '>Output:</div>
         {output}
       </pre>
 
-     
+    
 
-     
- <div
-          className="
-      absolute right-0 top-[100px] 
-      w-[359px] h-[571px] 
-      border border-[#444] 
-      flex flex-col 
-      overflow-hidden 
-      bg-[#1e2939] 
-      text-white 
-      font-sans 
-    "
-        >
- {/* Chat Section */}
-      {activeTab === "chat" && (
-        <div className="absolute right-0 top-[105px]">
-          <ChatWindow messages={messages} onSend={sendMessage} myId={myId} />
-        </div>
-      )}
+        <div 
+ className="w-full lg:w-[360px] lg:absolute lg:right-0 lg:top-[100px] h-[50vh] lg:h-[calc(100vh-100px)] border border-[#444] flex flex-col overflow-hidden bg-[#1e2939] text-white font-sans z-20"
+> 
+
+    {/* Chat Section */}
+    {activeTab === "chat" && (
+      <div className="flex-1 w-full relative flex flex-col overflow-hidden pt-[60px]">
+        <ChatWindow messages={messages} onSend={sendMessage} myId={myId} />
+      </div>
+    )}
           
-        </div>
+</div>
       {/* Participants Section */}
       {activeTab === "participants" && (
         <div
@@ -377,10 +371,10 @@ export default function RoomEditorPage() {
 
 
       {/* Border Box */}
-      <div className='border-1 border-gray-700 absolute right-0 w-[360px] h-0 text-[#1e2939] bottom-[127px]'> . </div>
-      <div className='border-1 border-gray-700 absolute right-0 bottom-[70px] w-[360px] h-0 text-[#1e2939]'> . </div>
+      {/* <div className='border-1 border-gray-700 absolute right-0 w-[360px] h-0 text-[#1e2939] bottom-[127px]'> . </div>
+      <div className='border-1 border-gray-700 absolute right-0 bottom-[70px] w-[360px] h-0 text-[#1e2939]'> . </div> */}
       {/* Border Box */}
-      <div className='border-1 border-l-0 border-t-0 border-gray-700 absolute top-0 right-0 w-[360px] h-[51px] text-[#1e2939]'> . </div>
+      {/* <div className='border-1 border-l-0 border-t-0 border-gray-700 absolute top-0 right-0 w-[360px] h-[51px] text-[#1e2939]'> . </div> */}
    
     {/* ROOM ID - copy/paste */}
           <div className="fixed top-0 right-0 mt-2.5">
@@ -396,7 +390,7 @@ export default function RoomEditorPage() {
 
         
       {/* Video Call & Leave Room buttons */}
-      <div className="absolute bottom-[18px] right-[36px] flex gap-3">
+      {/* <div className="absolute bottom-[18px] right-[36px] flex gap-3">
         <div className="">
         <button
           className="p-1.5 text-gray-800 rounded absolute bottom-[1px] right-[149px] cursor-pointer font-medium bg-green-500 w-[156px]"
@@ -416,6 +410,33 @@ export default function RoomEditorPage() {
           <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
           Leave Room
         </button>
+      </div> */}
+
+      {/* Video Call & Leave Room buttons */}
+      <div className="absolute bottom-[20px] right-[20px] flex gap-3 z-30 w-[320px]">
+        
+        {/* Join Call Button */}
+        <button
+          className="flex-1 py-2 text-gray-900 rounded cursor-pointer font-bold bg-green-500 hover:bg-green-600 transition"
+          onClick={() => setShowVideo(true)}
+        >
+          Join Call
+        </button>
+
+        {/* Video Call Component Trigger */}
+        {showVideo && (
+          <VideoCall roomId={roomId} userId={myId || ''} onClose={() => setShowVideo(false)} />
+        )}
+
+        {/* Leave Room Button */}
+        <button
+          className="flex-1 py-2 text-white bg-red-500 rounded hover:bg-red-600 cursor-pointer font-bold flex items-center justify-center"
+          onClick={handleLeaveRoom}
+        >
+          <FontAwesomeIcon icon={faSignOutAlt} className="mr-2" />
+          Leave Room
+        </button>
+
       </div>
 
     </div>
