@@ -1,7 +1,10 @@
 # 🚀 CodeCollab
 
-A real-time collaborative code editor built with **Next.js**, **Socket.io**, **Monaco Editor**, and **Judge0 API**.
-CodeCollab allows multiple users to join the same room, write code together in real time, and execute code instantly in multiple programming languages.
+A full-stack, browser-based real-time collaborative code editor
+enabling multiple users to write, edit, run, and discuss code simultaneously.
+Built room-based collaboration, where hosts generate shareable links for others
+to join coding sessions.
+
 
 ---
 
