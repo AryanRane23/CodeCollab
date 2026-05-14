@@ -231,12 +231,7 @@ http://localhost:3000/api/auth/callback/google
 # 📸 Future Improvements
 
 * 👥 Live cursors
-* 💬 Real-time chat
-* 📹 Video calling
-* 🧾 File explorer
-* ☁️ Save code sessions to database
 * 🧠 AI code suggestions
-* 🌙 Dark/Light theme toggle
 
 ---
 
@@ -245,7 +240,6 @@ http://localhost:3000/api/auth/callback/google
 * Handling real-time synchronization
 * Managing Socket.io room connections
 * Integrating Monaco Editor with Next.js App Router
-* Tailwind CSS v4 configuration issues
 * Implementing OAuth authentication using NextAuth.js
 
 ---
@@ -287,8 +281,8 @@ This project is licensed under the MIT License.
 
 **Aryan Rane**
 
-* GitHub: [https://github.com/your-github-username](https://github.com/your-github-username)
-* LinkedIn: [https://linkedin.com/in/your-linkedin](https://linkedin.com/in/your-linkedin)
+* GitHub: [https://github.com/AryanRane23/](https://github.com/AryanRane23/)
+* LinkedIn: [https://www.linkedin.com/in/aryanrane10](https://www.linkedin.com/in/aryanrane10)
 
 ---
 
